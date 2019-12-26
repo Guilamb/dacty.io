@@ -21,7 +21,7 @@ commandes suivantes:
 
 
 -Le jeu étant en version beta, les niveaux ne sont pas encore implémentés. 
-  Il faut donc taper 3 pour quitter la partie en cours.
+  Il faut donc taper stop pour quitter la partie en cours.
 
 Comme certains binômes ont un projet en mode texte et un autre 
 en mode graphique, merci de préciser le nom des programmes à 
