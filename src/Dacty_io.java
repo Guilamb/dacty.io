@@ -35,18 +35,25 @@ class Dacty_io extends Program{
 
 			println("Ceci est un petit jeu où tu dois écrire le plus vite possible le nom de ce que tu vois.");
 			int entree= readInt();
+			boolean debut=true;
 			if (entree==1){
 				manche = true;
 				score = 0;
 				miss = 0;
 				temps = 0;
+				
 				println("prêt ?");
-				valider=readString();
+
+				valider=readString(); // on demarre le chrono après validation
+				temps(debut);
+
 				while(manche){
+					//playSound("/home/guilamb/code/dacty.io/dacty.io/ressources/musique.mp3",true);	//url à changer !!!!
 					Mot unMot = new Mot();
 					initialiser(unMot);
 					verification(unMot);	
 				}
+				
 			} else if (entree==2) {
 				regles();
 			} else if (entree==3) {
@@ -72,14 +79,7 @@ class Dacty_io extends Program{
 		cursor(4,0);
 	}
 	void affichage(Mot unMot){  // devenu inutile
-		String phrase="";
-		boolean debut=true;
-		for (int i=0; i<unMot.nblettres; i++) {
-			phrase+=""+unMot.lettres[i];
-		}
-		println("tapez : "+phrase);
-		temps(debut);
-
+		println("tapez : "+unMot.motstr);
 	}
 	void initialiser(Mot unMot){ //on prends un mot dans la liste puis on lui met un type mot utiliser la notion de utilise
 		do {
@@ -102,25 +102,25 @@ class Dacty_io extends Program{
     }
 
 	void verification(Mot unMot){
-		boolean bon=false;
 		boolean debut=true;
 		cleanGinna();
-		println(unMot.motstr);
+		affichage(unMot);	
+		//println(unMot.motstr);
 		String inputString = readString();
 		if (equals(inputString,unMot.motstr)) {
 			score ++;
 		}else if(equals(inputString,"stop")){
-			println("Votre score etait : "+score);
-			println("Et vous avez loupé : "+miss+" mots.");
-			System.exit(0);
+			resultat(score,miss,false); // on le met à false car c'est la fin
 		} 
 		else {
 			miss ++;
 		}
+
 		debut=false;
 		temps = temps + temps(debut);
 		cleanGinna();
 	}
+	/*
 	String toString(Mot unMot) {   // relique d'une version précédente, peut encore servir
 		String res = "";
 		for (int i=0; i<unMot.nblettres; i++) {
@@ -128,4 +128,18 @@ class Dacty_io extends Program{
 		}
 		return res;
 	}
+	*/
+	void resultat(int score, int miss, boolean debut){ // separer tout affichage pour faciliter la migration au mode graphique
+			println("votre temps est de : "+(int)(temps(debut)));//pas bon
+			println("Votre score etait : "+score);
+			println("Et vous avez loupé : "+miss+" mots.");
+			System.exit(0);
+	}
 }
+//TO DO :
+/*	-debuger le temps
+	-rajouter des listes de mots, demander au joueur quel liste il veut 
+	-gerer les manches
+	-gerer la musique en fonction des manches
+	-preparer la migration console -> graphique (verrifier ou sont fait les prints)
+	*/
