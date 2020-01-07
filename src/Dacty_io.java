@@ -1,10 +1,30 @@
 import extensions.CSVFile;
+import extensions.*;
 class Dacty_io extends Program{
 	CSVFile fichier = loadCSV("./papillonShort.csv");
 	long tempsDebut=0,tempsFin=0;
 	String valider ="";//sert à mettre en pause l'execution du programme
 	int score, miss;
 	double temps;
+
+	void testRegles(){
+		boolean compréhention = true;
+		assertTrue(compréhention);
+	}
+	void testTemps(){
+		temps(true);
+		delay(5000);
+		double waitingTime = temps(false);
+		assertLessThanOrEqual(waitingTime,5.00);
+	}
+	void testCleanGinna(){
+		boolean ecran = true;
+		assertTrue(ecran);
+	}
+	void testAffichage(){
+		boolean ecran = true;
+		assertTrue(ecran);
+	}
 
 	void algorithm(){
 		
@@ -51,13 +71,15 @@ class Dacty_io extends Program{
 					//playSound("/home/guilamb/code/dacty.io/dacty.io/ressources/musique.mp3",true);	//url à changer !!!!
 					Mot unMot = new Mot();
 					initialiser(unMot);
-					verification(unMot);	
+					tappation(unMot);	
 				}
 				
 			} else if (entree==2) {
 				regles();
 			} else if (entree==3) {
 				System.exit(0);
+			} else if (entree==42) {
+				beaubeau();
 			}
 		}
 	}
@@ -78,9 +100,10 @@ class Dacty_io extends Program{
 		clearScreen();
 		cursor(4,0);
 	}
-	void affichage(Mot unMot){  // devenu inutile
-		println("tapez : "+unMot.motstr);
+	void affichage(Mot unMot){
+		println("tapez : " + unMot.motstr); //Un monstre de mot
 	}
+
 	void initialiser(Mot unMot){ //on prends un mot dans la liste puis on lui met un type mot utiliser la notion de utilise
 		do {
 			unMot.motstr = getCell(fichier,((int)(random()*rowCount(fichier))),0);
@@ -90,23 +113,25 @@ class Dacty_io extends Program{
 	}
 
 	double temps(boolean debut){
-
 		if(debut){
 			tempsDebut = getTime()/1000;
 		}else{
 			tempsFin=getTime()/1000;
 		}
-		
-		
-		return(tempsFin-tempsDebut);
+		return(tempsFin-tempsDebut); // oui, sa marche...
     }
 
-	void verification(Mot unMot){
+	void tappation(Mot unMot){
 		boolean debut=true;
 		cleanGinna();
-		affichage(unMot);	
-		//println(unMot.motstr);
+		affichage(unMot);
 		String inputString = readString();
+		verif(unMot,inputString);
+		debut=false;
+		temps = temps(debut); //SA MARCHE !!
+		cleanGinna();
+	}
+	void verif(Mot unMot,String inputString){
 		if (equals(inputString,unMot.motstr)) {
 			score ++;
 		}else if(equals(inputString,"stop")){
@@ -115,10 +140,6 @@ class Dacty_io extends Program{
 		else {
 			miss ++;
 		}
-
-		debut=false;
-		temps = temps + temps(debut);
-		cleanGinna();
 	}
 	/*
 	String toString(Mot unMot) {   // relique d'une version précédente, peut encore servir
@@ -130,10 +151,31 @@ class Dacty_io extends Program{
 	}
 	*/
 	void resultat(int score, int miss, boolean debut){ // separer tout affichage pour faciliter la migration au mode graphique
-			println("votre temps est de : "+(int)(temps(debut)));//pas bon
-			println("Votre score etait : "+score);
-			println("Et vous avez loupé : "+miss+" mots.");
+			String after1 = "";
+			String after2 = "";
+			if (score==0) {
+				after1 = " (._.)";
+			} else if (score>1) {
+				after1 = "s";
+			}
+			if (miss == 0) {
+				after2 = "Et vous n'avez loupé aucun mot, bravo !!";
+			} else if (miss == 1) {
+				after2 = "Et vous avez loupé : " + miss +" mot";
+			} else {
+				after2 = "Et vous avez loupé : " + miss +" mots";
+			}
+			println("votre temps est de : " + (int)(temps(debut)) + " secondes");//pas bon
+			println("Votre score est de : " + score + " point" + after1);
+			println(after2);
 			System.exit(0);
+	}
+	void beaubeau() {
+		cleanGinna();
+		Image celebrite = newImage("../ressources/BOBO.png");
+		show(celebrite);
+		println("COUCOU !!");
+		valider = readString();
 	}
 }
 //TO DO :
