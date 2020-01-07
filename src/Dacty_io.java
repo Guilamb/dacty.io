@@ -4,7 +4,7 @@ class Dacty_io extends Program{
 	CSVFile fichier = loadCSV("./papillonShort.csv");
 	long tempsDebut=0,tempsFin=0;
 	String valider ="";//sert à mettre en pause l'execution du programme
-	int score, miss;
+	int score, miss, lvl;
 	double temps;
 
 	void testRegles(){
@@ -30,45 +30,26 @@ class Dacty_io extends Program{
 		
 		boolean game=true;
 		boolean manche;
-		/*          Peut être après mais est devenu inutile 
 
-		Mot[] liste = new Mot[rowCount(fichier)];
-		String temp;
-		for (int i=0; i<rowCount(fichier); i-=-1) {println(getCell(fichier, i, 0));
-			temp = getCell(fichier, i, 1);
-			liste [i].nblettres = 10;
-			liste [i].lettres = new char [liste[i].nblettres];
-			for (int j=0; j<liste[i].nblettres; j-=-1) {
-				liste [i].lettres[j] = charAt(temp,j);
-			}
-			liste[i].utilise = false;
-		}
-		*/
 		while(game){
-			cleanGinna();
-
-			println("Bienvenue sur Dacty.io");
-			println("");
-			println("1 - Jouer");
-			println("2 - Comment jouer ?");
-			println("3 - Quitter");
-
-			println("Ceci est un petit jeu où tu dois écrire le plus vite possible le nom de ce que tu vois.");
+			newGame();
 			int entree= readInt();
-			boolean debut=true;
 			if (entree==1){
-				manche = true;
-				score = 0;
-				miss = 0;
-				temps = 0;
-				
-				println("prêt ?");
 
-				valider=readString(); // on demarre le chrono après validation
+				boolean debut=true;
+				 
+				choixNiveau();
+				lvl = readInt();
+				manche=true;
+
+				println("prêt ?");
+				valider=readString();// on demarre le chrono après validation
 				temps(debut);
 
+
+
 				while(manche){
-					//playSound("/home/guilamb/code/dacty.io/dacty.io/ressources/musique.mp3",true);	//url à changer !!!!
+					//playSound("/ressources/musique.mp3",true);	//url à changer !!!!
 					Mot unMot = new Mot();
 					initialiser(unMot);
 					tappation(unMot);	
@@ -95,6 +76,16 @@ class Dacty_io extends Program{
 		println("Une fois votre partie termine vous avez votre score, tentez de battre votre reccord !");
 		valider = readString();
 	}
+	void choixNiveau(){
+		cleanGinna();
+		println("1 - 1min");
+		println("2 - 5min");
+		println("3 - 10min");
+		println("4 - infini ! tapez stop pour arreter");
+		println("");
+		println("Entrez le niveau voulus : ");
+
+	}
 
 	void cleanGinna (){   // Pour remettre l'écran comme il faut
 		clearScreen();
@@ -102,6 +93,26 @@ class Dacty_io extends Program{
 	}
 	void affichage(Mot unMot){
 		println("tapez : " + unMot.motstr); //Un monstre de mot
+	}
+
+	void newGame(){ //marche pas encore 
+		cleanGinna();
+		tempsDebut=0;
+		tempsFin=0;
+		score = 0;
+		miss = 0;
+		temps = 0;
+		
+
+		println("Bienvenue sur Dacty.io");
+		println("");
+		println("1 - Jouer");
+		println("2 - Comment jouer ?");
+		println("3 - Quitter");
+
+		println("Ceci est un petit jeu où tu dois écrire le plus vite possible le nom de ce que tu vois.");
+
+		
 	}
 
 	void initialiser(Mot unMot){ //on prends un mot dans la liste puis on lui met un type mot utiliser la notion de utilise
@@ -118,19 +129,24 @@ class Dacty_io extends Program{
 		} else {
 			tempsFin=getTime()/1000;
 		}
-		return (tempsFin-tempsDebut); // oui, sa marche...
+		return (tempsFin-tempsDebut); 
     }
 
 	void tappation(Mot unMot){
 		boolean debut=true;
 		cleanGinna();
 		affichage(unMot);
-		verif(unMot,readString());
+		verification(unMot,readString());
+
 		debut=false;
-		temps = temps(debut); //SA MARCHE !!
+		temps = temps(debut); 
 		cleanGinna();
+		if (lvl < 4){
+			chrono();	
+		}
+		
 	}
-	void verif(Mot unMot,String inputString){
+	void verification(Mot unMot,String inputString){
 		if (equals(inputString,unMot.motstr)) {
 			score ++;
 		}else if(equals(inputString,"stop")){
@@ -167,7 +183,10 @@ class Dacty_io extends Program{
 			println("votre temps est de : " + (int)(temps(debut)) + " secondes");//pas bon
 			println("Votre score est de : " + score + " point" + after1);
 			println(after2);
+			println("appuyez sur une touche pour continuer...");
+			valider = readString();
 			System.exit(0);
+			newGame();//pas encore au point 
 	}
 	void beaubeau() {
 		cleanGinna();
@@ -175,6 +194,21 @@ class Dacty_io extends Program{
 		show(celebrite);
 		println("COUCOU !!");
 		valider = readString();
+	}
+	void chrono(){
+		int limiteDeTemps = 0;
+		if (lvl == 1){
+			limiteDeTemps=60;
+		}else if (lvl == 2) {
+			limiteDeTemps=5*60;
+		}else if (lvl == 3) {
+			limiteDeTemps=10*60;
+		}else{
+			
+		}
+		if (temps(false)>=limiteDeTemps){// on arrete la mesure du temps
+			resultat(score,miss,false);
+		}
 	}
 }
 //TO DO :
