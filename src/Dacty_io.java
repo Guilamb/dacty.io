@@ -73,7 +73,7 @@ class Dacty_io extends Program{
 					initialiser(unMot);
 					tappation(unMot);	
 				}
-				
+
 			} else if (entree==2) {
 				regles();
 			} else if (entree==3) {
@@ -113,20 +113,19 @@ class Dacty_io extends Program{
 	}
 
 	double temps(boolean debut){
-		if(debut){
+		if(debut) {
 			tempsDebut = getTime()/1000;
-		}else{
+		} else {
 			tempsFin=getTime()/1000;
 		}
-		return(tempsFin-tempsDebut); // oui, sa marche...
+		return (tempsFin-tempsDebut); // oui, sa marche...
     }
 
 	void tappation(Mot unMot){
 		boolean debut=true;
 		cleanGinna();
 		affichage(unMot);
-		String inputString = readString();
-		verif(unMot,inputString);
+		verif(unMot,readString());
 		debut=false;
 		temps = temps(debut); //SA MARCHE !!
 		cleanGinna();
