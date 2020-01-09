@@ -2,54 +2,65 @@ import extensions.CSVFile;
 import extensions.*;
 class Dacty_io extends Program{
 	CSVFile fichier = loadCSV("./papillonShort.csv");
+	Image img = newImage("../ressources/menu.gif");
 	long tempsDebut=0,tempsFin=0;
 	String valider ="";//sert à mettre en pause l'execution du programme
-	int score, miss, lvl;
+	int score, miss, lvl, duree, entree;
 	double temps;
 
-	void testRegles(){
-		boolean compréhention = true;
-		assertTrue(compréhention);
-	}
+
 	void testTemps(){
 		temps(true);
 		delay(5000);
 		double waitingTime = temps(false);
 		assertLessThanOrEqual(waitingTime,5.00);
-	}
-	void testCleanGinna(){
-		boolean ecran = true;
-		assertTrue(ecran);
-	}
-	void testAffichage(){
-		boolean ecran = true;
-		assertTrue(ecran);
-	}
+	}/*
+	void menuGraphique(){
+		show(img);
 
+
+
+	}
+	void mouseChanged(String name, int x, int y, int button, String event){
+		if(x>=150 && x<=445 && y>=53 && y<=124 ){
+			entree=1;
+		}else if (x>=150 && x<=445 && y>=168 && y<=240 ) {
+			entree=2;
+		}else if (x>=150 && x<=445 && y>=274 && y<=338 ) {
+			entree=3;
+		}
+	}
+*/
 	void algorithm(){
 		
 		boolean game=true;
 		boolean manche;
 
 		while(game){
+			//menuGraphique();
 			newGame();
-			int entree= readInt();
+			entree= readInt();
 			if (entree==1){
 
 				boolean debut=true;
 				 
 				choixNiveau();
 				lvl = readInt();
-				manche=true;
+				if(lvl == 5){
+					println("combien de temps voulez vous jouer ?");
+					duree = readInt();
+				}
+				
 
 				println("prêt ?");
 				valider=readString();// on demarre le chrono après validation
+				playSound("../ressources/musique.mp3",true);
 				temps(debut);
+				manche=true;
 
 
 
 				while(manche){
-					//playSound("/ressources/musique.mp3",true);	//url à changer !!!!
 					Mot unMot = new Mot();
 					initialiser(unMot);
 					tappation(unMot);	
@@ -82,6 +93,7 @@ class Dacty_io extends Program{
 		println("2 - 5min");
 		println("3 - 10min");
 		println("4 - infini ! tapez stop pour arreter");
+		println("5 - personnalise (en min)");
 		println("");
 		println("Entrez le niveau voulus : ");
 
@@ -141,11 +153,12 @@ class Dacty_io extends Program{
 		debut=false;
 		temps = temps(debut); 
 		cleanGinna();
-		if (lvl < 4){
+		if (lvl < 4 || lvl==5){
 			chrono();	
 		}
 		
 	}
+
 	void verification(Mot unMot,String inputString){
 		if (equals(inputString,unMot.motstr)) {
 			score ++;
@@ -198,13 +211,13 @@ class Dacty_io extends Program{
 	void chrono(){
 		int limiteDeTemps = 0;
 		if (lvl == 1){
-			limiteDeTemps=60;
+			limiteDeTemps=2;//60;
 		}else if (lvl == 2) {
 			limiteDeTemps=5*60;
 		}else if (lvl == 3) {
 			limiteDeTemps=10*60;
-		}else{
-			
+		}else if (lvl == 5) {
+			limiteDeTemps=duree*60;
 		}
 		if (temps(false)>=limiteDeTemps){// on arrete la mesure du temps
 			resultat(score,miss,false);
