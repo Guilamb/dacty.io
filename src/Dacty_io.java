@@ -2,7 +2,6 @@ import extensions.CSVFile;
 import extensions.*;
 class Dacty_io extends Program {
 	CSVFile fichier = loadCSV("./papillonShort.csv");
-	Image img = newImage("../ressources/menu.gif"); //pas utile
 	String valider ="";  //sert à mettre en pause l'execution du programme
 	int score, duree, miss, lvl, temps, entree, nbmot ,cpt;
 	boolean manche, abort;
@@ -113,7 +112,7 @@ class Dacty_io extends Program {
 		}
 	}*/
 
-	void _algorithm(){
+	void algorithm(){
 		
 		boolean game = true;
 
@@ -224,9 +223,9 @@ class Dacty_io extends Program {
 		nbmot = 0;
 		duree = 0;
 		entree = 0;
-		nbmot = 0;
 		cpt = 0;
 		abort = false;
+		println("________                 __              .__        ");println("\\______ \\ _____    _____/  |_ ___.__.    |__| ____  ");println(" |    |  \\\\__  \\ _/ ___\\   __<   |  |    |  |/  _ \\ ");println(" |    `   \\/ __ \\\\  \\___|  |  \\___  |    |  (  <_> )");println("/_______  (____  /\\___  >__|  / ____| /\\ |__|\\____/ ");println("        \\/     \\/     \\/      \\/      \\/            ");println("");
 		println("Bienvenue sur Dacty.io");
 		println("");
 		println("1 - Jouer");
@@ -245,9 +244,9 @@ class Dacty_io extends Program {
 				println("2 - Définir un nombre de mots ?");
 				println("");
 				tagada = readString();
-			} while (!equals(tagada,"1")&&!equals(tagada,"2"));
-			
+			} while (!equals(tagada,"1")&&!equals(tagada,"2"));			
 		}
+
 		if (equals(tagada,"1")) {
 			do {
 				cleanGinna();
@@ -324,7 +323,7 @@ class Dacty_io extends Program {
 		return res;
 	}*/
 
-	void resultat(){ // separer tout affichage pour faciliter la migration au mode graphique
+	void resultat() { // separer tout affichage pour faciliter la migration au mode graphique
 		cleanGinna();
 		String after1 = ".";
 		String after2 = "";
@@ -390,8 +389,8 @@ class Dacty_io extends Program {
 	void re() {
 		cleanGinna();
 		println("On en refait une ? o/n");
-		String yn = readString();
-		if (equals(yn,"n") || equals(yn,"N") || equals(yn,"non") || equals(yn,"Non") || equals(yn,"NON")) {
+		String yn = toUpperCase(readString());
+		if (equals(yn,"N") ||equals(yn,"NON")) {
 			cleanGinna();
 			System.exit(0);
 		}
