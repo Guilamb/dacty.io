@@ -7,12 +7,12 @@ class Dacty_io extends Program {
 	int score, duree, miss, lvl, temps, entree, nbmot ,cpt;
 	boolean manche, abort;
 
-	void testTemps() {
+	void _testTemps() {
 		temps = 0;
 		temps(50,100);
 		assertEquals(temps,50);
 	}
-	void testChrono() {
+	void _testChrono() {
 		temps = 5000;
 		duree = 30;
 		manche = true;
@@ -29,7 +29,7 @@ class Dacty_io extends Program {
 		chrono();
 		assertFalse(manche);
 	}
-	void testCompteur() {
+	void _testCompteur() {
 		manche = true;
 		cpt = 30;
 		nbmot = 40;
@@ -39,7 +39,7 @@ class Dacty_io extends Program {
 		compteur();
 		assertFalse(manche);
 	}
-	void testNewGame() {
+	void _testNewGame() {
 		abort = true;
 		temps = 40000;
 		assertTrue(abort);
@@ -65,7 +65,7 @@ class Dacty_io extends Program {
 			}
 		}
 	}
-	void testVerification() {
+	void _testVerification() {
 		newGame();
 		Mot unMot = new Mot();
 		unMot.motstr = "toto";
@@ -86,6 +86,20 @@ class Dacty_io extends Program {
 		assertEquals(miss,1);
 		assertFalse(manche);
 	}
+	void testTriRapide() {
+		String[] tab = new String[]{"tutu","tata","toto","totu","titi","ababab","babab","cacac","dfghj","qlmnop","rtyu","thy","hj","fhj","kuik","dtfrh","jdj","dyk"};
+		triRapide(tab,0,17);
+		assertEquals("ababab",tab[0]);
+		assertEquals("babab",tab[1]);
+		assertEquals("cacac",tab[2]);
+		assertEquals("dfghj",tab[3]);
+		assertEquals("dtfrh",tab[4]);
+		assertEquals("dyk",tab[5]);
+		assertEquals("fhj",tab[6]);
+		assertEquals("hj",tab[7]);
+		assertEquals("jdj",tab[8]);
+		assertEquals("kuik",tab[9]);
+	}
 	/*void menuGraphique(){
 		show(img);
 	}
@@ -99,7 +113,7 @@ class Dacty_io extends Program {
 		}
 	}*/
 
-	void algorithm(){
+	void _algorithm(){
 		
 		boolean game = true;
 
@@ -128,9 +142,10 @@ class Dacty_io extends Program {
 
 				println("prêt ?");
 				valider = readString(); // on demarre le chrono après validation
-				playSound("../ressources/musique.mp3",true);
+				playSound("musique.mp3",true);
 				manche = true;
-
+				delay(10);
+				cleanGinna();
 				while (manche) {
 					Mot unMot = new Mot();
 					initialiser(unMot);
@@ -155,6 +170,7 @@ class Dacty_io extends Program {
 			} else if (entree == 2) {
 				regles();
 			} else if (entree == 3) {
+				cleanGinna();
 				System.exit(0);
 			} else if (entree == 42) {
 				beaubeau();
@@ -168,9 +184,9 @@ class Dacty_io extends Program {
 		println("Voici les regles du jeu :");
 		println("");
 		println("");
-		println("Entrez le mot representé par l'image et l'ecriture en dessous le plus vite possible puis appuyez sur entree pour valider le mot et passer au mot suivant.");
-		println("Si le mot rentre est faux il vous faudra recommencer jusqu'a avoir tape la bonne reponse");
-		println("Une fois votre partie termine vous avez votre score, tentez de battre votre reccord !");
+		println("Écrivez le mot affiché le plus vite possible puis appuyez sur entrée pour valider le mot et passer au suivant.");
+		println("Et temps pis si le mot est faux, on passe au suivant !!");
+		println("Une fois votre partie terminé vous avez votre score, alors tentez de battre votre record !");
 		valider = readString();
 	}
 	void choixNiveau() {
@@ -271,6 +287,34 @@ class Dacty_io extends Program {
 			miss ++;
 		}
 	}
+	void triRapide(String[] tab, int deb, int fin) {
+		if (deb < fin) {
+			int index = decoupage(tab, deb, fin);
+
+			triRapide(tab, deb, index-1);
+			triRapide(tab, index+1, fin);
+		}
+	}
+	int decoupage(String[] tab, int deb, int fin) {
+		String pivot = tab[fin];
+		int petit = (deb-1);
+		for (int idx=deb; idx<fin; idx++) {
+			int ca = 0;
+			while (charAt(tab[idx],ca) == charAt(pivot,ca) && length(tab[idx])>ca&&length(pivot)>ca) {
+				ca++;
+			}
+			if (charAt(tab[idx],ca) < charAt(pivot,ca)) {
+				petit++;
+				String temp = tab[petit];
+				tab[petit] = tab[idx];
+				tab[idx] = temp;
+			}
+		}
+		String temp = tab[petit+1];
+		tab[petit+1] = tab[fin];
+		tab[fin] = temp;
+		return petit+1;
+	}
 
 	/* String toString(Mot unMot) {   // relique d'une version précédente, peut encore servir
 		String res = "";
@@ -296,28 +340,34 @@ class Dacty_io extends Program {
 		} else {
 			after2 = "";
 		}
-		if (abort && lvl != 5) {
+		if (score == 0 && miss == 0) {
+			println("Tu as lachement abandonné !!");
+		} else if (abort && lvl != 5) {
 			println("La partie a été interrompue !!");
 		} else {
 			println("La partie est terminée !!");
 		}
 		valider = readString();
 		cleanGinna();
-		println("Fin de partie :");
+		if (score > 0 || miss > 0) {
+			println("Fin de partie :");
+		}
 		println("");
-		if (duree != 0 || lvl == 5 || abort) {
+		if (score == 0 && miss == 0) {
+			println("Du coup tu ne peux que recommencer.");
+		} else if (duree != 0 || lvl == 5 || abort) {
 			println("Ta as correctement tapé " + score + " mot" + after1);
 		} else {
 			println("Tu a fait tes " + nbmot + " mots.");
 		}
 		if (miss > 0) {
 			println("En en ayant raté " + miss + ".");
-		} else {
+		} else if (score > 0) {
 			println("Sans en rater un seul !!");
 		}
-		if (!abort && duree != 0) {
+		if (!abort && duree != 0 && (score > 0|| miss > 0)) {
 			println("Le tout en " + duree + " secondes.");
-		} else {
+		} else if (score > 0|| miss > 0) {
 			println("Le tout en " + (int)(((int)temps/10)/100) + " secondes.");
 		}
 		println("");
@@ -342,6 +392,7 @@ class Dacty_io extends Program {
 		println("On en refait une ? o/n");
 		String yn = readString();
 		if (equals(yn,"n") || equals(yn,"N") || equals(yn,"non") || equals(yn,"Non") || equals(yn,"NON")) {
+			cleanGinna();
 			System.exit(0);
 		}
 	}
