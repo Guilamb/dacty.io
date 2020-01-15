@@ -12,7 +12,7 @@ class Dacty_io extends Program {
 	String filename;
 	final int NBMAXMOTS =10000;
 	String[] listeCsv;
-	void chercherCsv();
+	int nbMots;
 
 	void testTemps() {
 		temps = 0;
@@ -93,7 +93,7 @@ class Dacty_io extends Program {
 		assertEquals(miss,1);
 		assertFalse(manche);
 	}
-	void testTriRapide() {
+	/*void testTriRapide() {
 		String[] tab = new String[]{"tutu","tata","toto","totu","titi","ababab","babab","cacac","dfghj","qlmnop","rtyu","thy","hj","fhj","kuik","dtfrh","jdj","dyk"};
 		triRapide(tab,0,17);
 		assertEquals("ababab",tab[0]);
@@ -106,10 +106,10 @@ class Dacty_io extends Program {
 		assertEquals("hj",tab[7]);
 		assertEquals("jdj",tab[8]);
 		assertEquals("kuik",tab[9]);
-	}
+	}*/
 
 	void algorithm() {
-		
+		chercherCsv();
 		boolean game = true;
 		for (int i=0; i<rowCount(textecsv); i++) {
 			for (int j=0; j<columnCount(textecsv); j++) {
@@ -280,14 +280,13 @@ class Dacty_io extends Program {
 			miss ++;
 		}
 	}
-	void _triRapide(String[] tab, int deb, int fin) {
+	/*void _triRapide(String[] tab, int deb, int fin) {
 		if (deb < fin) {
 			int index = decoupage(tab, deb, fin);
-
 			triRapide(tab, deb, index-1);
 			triRapide(tab, index+1, fin);
 		}
-	}
+	}*/
 	int _decoupage(String[] tab, int deb, int fin) {
 		String pivot = tab[fin];
 		int petit = (deb-1);
@@ -390,7 +389,7 @@ class Dacty_io extends Program {
 		int section;
 		do {
 			for (int i=0; i<4; i++) {
-				println(texte[6][i])
+				println(texte[6][i]);
 			}
 			section = readInt();
 		} while (section!=1&&section!=2&&section!=3&&section!=4);
@@ -471,11 +470,11 @@ class Dacty_io extends Program {
 	}
 	void acquerirCsv(String[][] tab,boolean afficher){
 		cleanGinna();
-		nbMots=0;
+		int nbMots=0;
 		int y=0;
 		while(y<rowCount(fichier) && tab[y][0]!=null && !equals(tab[y][0],"null")){
 			if(afficher) println(tab[y][0]);
-			nbMots++;
+				nbMots++;
 			y++;
 		}
 	}
@@ -531,7 +530,8 @@ class Dacty_io extends Program {
 		valider = readString();
 
 	}
-	String[] chercherCsv() {
+	void 
+	chercherCsv() {
 		String[] ressources = getAllFilesFromDirectory("../ressources");
 		int nbCsv = 0, cpt = 0, cps = 0;
 		for (int i = 0; i<length(ressources); i++) {
