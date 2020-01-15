@@ -2,9 +2,11 @@ import extensions.CSVFile;
 import extensions.*;
 class Dacty_io extends Program {
 	CSVFile fichier = loadCSV("./papillonShort.csv");
+	CSVFile textecsv = loadCSV("./texte.csv");
 	String valider ="";  //sert à mettre en pause l'execution du programme
 	int score, duree, miss, lvl, temps, entree, nbmot ,cpt;
 	boolean manche, abort;
+	String [][] texte = new String[columnCount(textecsv)][rowCount(textecsv)];
 
 	void _testTemps() {
 		temps = 0;
@@ -103,7 +105,16 @@ class Dacty_io extends Program {
 	void algorithm() {
 		
 		boolean game = true;
-
+		for (int i=0; i<rowCount(textecsv); i++) {
+			for (int j=0; j<columnCount(textecsv); j++) {
+			 	if (equals(getCell(textecsv,i,j),"vide")) {
+			 	 	texte[j][i] = "";
+			 	 } else {
+			 	 	texte[j][i] = getCell(textecsv,i,j);
+			 	 }
+			 } 
+		}
+		
 		while(game){
 			//menuGraphique();
 			newGame();
@@ -127,7 +138,7 @@ class Dacty_io extends Program {
 					}
 				}
 
-				println("prêt ?");
+				println(texte[3][0]);
 				valider = readString(); // on demarre le chrono après validation
 				playSound("musique.mp3",true);
 				manche = true;
@@ -167,25 +178,16 @@ class Dacty_io extends Program {
 
 	void regles() {      // Parce qu'elles le valent bien
 		cleanGinna();
-
-		println("Voici les regles du jeu :");
-		println("");
-		println("");
-		println("Écrivez le mot affiché le plus vite possible puis appuyez sur entrée pour valider le mot et passer au suivant.");
-		println("Et temps pis si le mot est faux, on passe au suivant !!");
-		println("Une fois votre partie terminé vous avez votre score, alors tentez de battre votre record !");
+		for (int i=0; i<8; i++) {
+			println(texte[2][i]);
+		}
 		valider = readString();
 	}
 	void choixNiveau() {
 		cleanGinna();
-		println("1 - 1 minute");
-		println("2 - 2 minutes");
-		println("3 - 30 mots");
-		println("4 - 60 mots");
-		println("5 - Pas de limite !! (tapez stop pour arreter)");
-		println("6 - Partie personalisée");
-		println("");
-		println("Entrez le niveau voulus : ");
+		for (int i=0; i<8; i++) {
+			println(texte[1][i]);
+		}
 	}
 
 	void cleanGinna () {   // Pour remettre l'écran comme il faut
@@ -193,7 +195,7 @@ class Dacty_io extends Program {
 		cursor(4,0);
 	}
 	void affichage(Mot unMot){
-		println("tapez : " + unMot.motstr); //Un monstre de mot
+		println(texte [3][1]+ unMot.motstr); //Un monstre de mot
 	}
 
 	void compteur() {
@@ -213,43 +215,39 @@ class Dacty_io extends Program {
 		entree = 0;
 		cpt = 0;
 		abort = false;
-		println("________                 __              .__        ");println("\\______ \\ _____    _____/  |_ ___.__.    |__| ____  ");println(" |    |  \\\\__  \\ _/ ___\\   __<   |  |    |  |/  _ \\ ");println(" |    `   \\/ __ \\\\  \\___|  |  \\___  |    |  (  <_> )");println("/_______  (____  /\\___  >__|  / ____| /\\ |__|\\____/ ");println("        \\/     \\/     \\/      \\/      \\/            ");println("");
-		println("Bienvenue sur Dacty.io");
-		println("");
-		println("1 - Jouer");
-		println("2 - Comment jouer ?");
-		println("3 - Quitter");
-
-		println("Ceci est un petit jeu où tu dois écrire le plus vite possible le nom de ce que tu vois.");
+		for (int i=0; i<14; i++) {
+			println(texte[0][i]);
+		}
 	}
 
 	void partiePerso() {
-		String tagada = "";
-		while (equals(tagada,"")&&!equals(tagada,"1")&&!equals(tagada,"2")) {
+		String tagada;
+		int menu1 = 0;
+		int tagadu = 0;
+		for (int re = 0; re<9; re=re+3) {
+			tagada = "";
 			do {
 				cleanGinna();
-				println("1 - Définir une limite de temps ?");
-				println("2 - Définir un nombre de mots ?");
-				println("");
+				for (int i=0; i<3; i++) {
+					println(texte[4][re+i]);
+				}
 				tagada = readString();
-			} while (!equals(tagada,"1")&&!equals(tagada,"2"));			
+				if (equals(tagada,"")) {
+					tagada = "3";
+				}
+				tagadu = stringToInt(tagada);
+			} while (((!equals(tagada,"1") && (!equals(tagada,"2"))) && re==0) || (((tagadu>600) || (tagadu<10)) && re == 3) || (((tagadu>400) || (tagadu<10)) && re == 6));
+			menu1 = stringToInt(tagada);
+			if (menu1 == 1) {
+				re = 3;		
+			} else if (menu1 == 2){
+				re = 6;
+			}
 		}
-
-		if (equals(tagada,"1")) {
-			do {
-				cleanGinna();
-				println("Combien de temps ? (en secondes, entre 10 et 600 (10 minutes)) :");
-				println("");
-				duree = readInt();
-			} while (duree > 600 || duree < 10);
-			
+		if (menu1 == 1) {
+			duree = tagadu;
 		} else {
-			do {
-				cleanGinna();
-				println("Combien de mots ? (entre 10 et 400) :");
-				println("");
-				nbmot = readInt();
-			} while (nbmot > 400 || nbmot < 10);
+			nbmot = tagadu;
 		}
 	}
 
@@ -320,37 +318,37 @@ class Dacty_io extends Program {
 			after2 = "";
 		}
 		if (score == 0 && miss == 0) {
-			println("Tu as lachement abandonné !!");
+			println(texte[5][0]);
 		} else if (abort && lvl != 5) {
-			println("La partie a été interrompue !!");
+			println(texte[5][1]);
 		} else {
-			println("La partie est terminée !!");
+			println(texte[5][2]);
 		}
 		valider = readString();
 		cleanGinna();
 		if (score > 0 || miss > 0) {
-			println("Fin de partie :");
+			println(texte[5][3]);
 		}
-		println("");
+		println(texte[5][4]);
 		if (score == 0 && miss == 0) {
-			println("Du coup tu ne peux que recommencer.");
+			println(texte[5][5]);
 		} else if (duree != 0 || lvl == 5 || abort) {
-			println("Ta as correctement tapé " + score + " mot" + after1);
+			println(texte[5][6] + score + " mot" + after1);
 		} else {
-			println("Tu a fait tes " + nbmot + " mots.");
+			println(texte[5][7] + nbmot + " mots.");
 		}
 		if (miss > 0) {
-			println("En en ayant raté " + miss + ".");
+			println(texte[5][8] + miss + ".");
 		} else if (score > 0) {
-			println("Sans en rater un seul !!");
+			println(texte[5][9]);
 		}
 		if (!abort && duree != 0 && (score > 0|| miss > 0)) {
-			println("Le tout en " + duree + " secondes.");
+			println(texte[5][10] + duree + texte[5][11]);
 		} else if (score > 0|| miss > 0) {
-			println("Le tout en " + (int)(((int)temps/10)/100) + " secondes.");
+			println(texte[5][10] + (int)(((int)temps/10)/100) + texte[5][11]);
 		}
 		println("");
-		println("appuyez sur une touche pour continuer...");
+		println(texte[5][12]);
 		valider = readString();
 		nouvellePartie();
 	}
