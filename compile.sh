@@ -4,4 +4,4 @@ export CLASSES=classes
 export CLASSPATH=`find lib -name "*.jar"`
 
 javac -cp ${CLASSPATH} -sourcepath ${SOURCES} -d ${CLASSES} $@ `find src -name "*.java"`
-cp ressources/* classes/
+cp -r ressources/* classes/
