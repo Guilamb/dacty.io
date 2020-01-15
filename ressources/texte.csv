@@ -1,14 +1,14 @@
-________                 __              .__        ,1 - 1 minute,Voici les règles du jeu :,prÃªt ?,1 - Définir une limite de temps ?,Tu as lachement abandonné !!
-\\______ \\ _____    _____/  |_ ___.__.    |__| ____  ,2 - 2 minutes,vide,tapez : ,2 - Définir un nombre de mots ?,La partie a été interrompue !!
- |    |  \\\\__  \\ _/ ___\\   __<   |  |    |  |/  _ \\ ,3 - 30 mots,vide,vide,vide,La partie est terminée !!
- |    `   \\/ __ \\\\  \\___|  |  \\___  |    |  (  <_> ),4 - 60 mots,Écrivez le mot affiché le plus vite possible,vide,Combien de temps ? (en secondes, entre 10 et 600 (10 minutes)) :,Fin de partie :
-/_______  (____  /\\___  >__|  / ____| /\\ |__|\\____/ ,5 - Pas de limite !! (tapez stop pour arreter),Puis appuyez sur entrée pour valider le mot et continuer.,vide,vide,vide
+________                 __              .__        ,1 - 1 minute,Voici les rÃ¨gles du jeu :,prÃªt ?,1 - DÃ©finir une limite de temps ?,Tu as lachement abandonnÃ© !!
+\\______ \\ _____    _____/  |_ ___.__.    |__| ____  ,2 - 2 minutes,vide,tapez : ,2 - DÃ©finir un nombre de mots ?,La partie a Ã©tÃ© interrompue !!
+ |    |  \\\\__  \\ _/ ___\\   __<   |  |    |  |/  _ \\ ,3 - 30 mots,vide,vide,vide,La partie est terminÃ©e !!
+ |    `   \\/ __ \\\\  \\___|  |  \\___  |    |  (  <_> ),4 - 60 mots,Ã‰crivez le mot affichÃ© le plus vite possible,vide,Combien de temps ? (en secondes, entre 10 et 600 (10 minutes)) :,Fin de partie :
+/_______  (____  /\\___  >__|  / ____| /\\ |__|\\____/ ,5 - Pas de limite !! (tapez stop pour arreter),Puis appuyez sur entrÃ©e pour valider le mot et continuer.,vide,vide,vide
         \\/     \\/     \\/      \\/      \\/            ,6 - Partie personalisÃ©e,Et temps pis si le mot est faux on passe au suivant !!,vide,vide,Du coup tu ne peux que recommencer.
-vide,vide,Une fois votre partie terminé vous avez votre score,vide,Combien de mots ? (entre 10 et 400) :,Ta as correctement tapé 
+vide,vide,Une fois votre partie terminÃ© vous avez votre score,vide,Combien de mots ? (entre 10 et 400) :,Ta as correctement tapÃ© 
 Bienvenue sur Dacty.io,Entrez le niveau voulu : ,Alors tentez de battre votre record !!,vide,vide,Tu a fait tes 
-vide,vide,vide,vide,vide,En en ayant raté 
+vide,vide,vide,vide,vide,En en ayant ratÃ© 
 1 - Jouer,vide,vide,vide,vide,Sans en rater un seul !!
 2 - Comment jouer ?,vide,vide,vide,vide,Le tout en 
 3 - Quitter,vide,vide,vide,vide, secondes.
 vide,vide,vide,vide,vide,appuyez sur une touche pour continuer...
-Ceci est un petit jeu oÃ¹ tu dois Ã©crire le plus vite possible le nom de ce que tu vois.,vide,vide,vide,vide,vide
+Ceci est un petit jeu oÃƒÂ¹ tu dois ÃƒÂ©crire le plus vite possible le nom de ce que tu vois.,vide,vide,vide,vide,vide
