@@ -224,6 +224,7 @@ class Dacty_io extends Program {
 	void partiePerso() {
 		int tagada = 0;
 		int menu1 = 0;
+		boolean mode = false;
 		for (int re = 0; re<9; re=re+3) {
 			tagada = 0;
 			do {
@@ -234,6 +235,8 @@ class Dacty_io extends Program {
 				tagada = readInt();
 				if (tagada == 0) {
 					tagada = 3;
+				} else if (re == 0 && tagada == 1) {
+					mode = true;
 				}
 			} while (((tagada != 1 && (tagada != 2)) && re==0) || (((tagada>600) || (tagada<10)) && re == 3) || (((tagada>400) || (tagada<10)) && re == 6));
 			if (tagada == 2){
@@ -242,7 +245,7 @@ class Dacty_io extends Program {
 				re = 10;
 			}
 		}
-		if (tagada == 1) {
+		if (mode) {
 			duree = tagada;
 		} else {
 			nbmot = tagada;
