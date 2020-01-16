@@ -90,20 +90,7 @@ class Dacty_io extends Program {
 		assertEquals(miss,1);
 		assertFalse(manche);
 	}
-	/*void testTriRapide() {
-		String[] tab = new String[]{"tutu","tata","toto","totu","titi","ababab","babab","cacac","dfghj","qlmnop","rtyu","thy","hj","fhj","kuik","dtfrh","jdj","dyk"};
-		triRapide(tab,0,17);
-		assertEquals("ababab",tab[0]);
-		assertEquals("babab",tab[1]);
-		assertEquals("cacac",tab[2]);
-		assertEquals("dfghj",tab[3]);
-		assertEquals("dtfrh",tab[4]);
-		assertEquals("dyk",tab[5]);
-		assertEquals("fhj",tab[6]);
-		assertEquals("hj",tab[7]);
-		assertEquals("jdj",tab[8]);
-		assertEquals("kuik",tab[9]);
-	}*/
+	
 
 	void algorithm() {
 		boolean game = true;
@@ -274,33 +261,6 @@ class Dacty_io extends Program {
 			miss ++;
 		}
 	}
-	void triRapide(String[] tab, int deb, int fin) {
-		if (deb < fin) {
-			int index = decoupage(tab, deb, fin);
-			triRapide(tab, deb, index-1);
-			triRapide(tab, index+1, fin);
-		}
-	}
-	int decoupage(String[] tab, int deb, int fin) {
-		String pivot = tab[fin];
-		int petit = (deb-1);
-		for (int idx=deb; idx<fin; idx++) {
-			int ca = 0;
-			while (charAt(tab[idx],ca) == charAt(pivot,ca) && length(tab[idx])>ca&&length(pivot)>ca) {
-				ca++;
-			}
-			if (charAt(tab[idx],ca) < charAt(pivot,ca)) {
-				petit++;
-				String temp = tab[petit];
-				tab[petit] = tab[idx];
-				tab[idx] = temp;
-			}
-		}
-		String temp = tab[petit+1];
-		tab[petit+1] = tab[fin];
-		tab[fin] = temp;
-		return petit+1;
-	}
 
 	void resultat() { // separer tout affichage pour faciliter la migration au mode graphique
 		cleanGinna();
@@ -359,7 +319,7 @@ class Dacty_io extends Program {
 		valider = readString();
 		cleanGinna();
 		for (int i=0; i<rowCount(beaubeau); i++) {
-			println(getCell(fichier,i,0));
+			println(getCell(beaubeau,i,0));
 		}
 		/*Image celebrite = newImage("../ressources/BOBO.png");
 		show(celebrite);
