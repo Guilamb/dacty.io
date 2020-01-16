@@ -7,7 +7,7 @@ class Dacty_io extends Program {
 	CSVFile textecsv = loadCSV("./texte.csv");
 	CSVFile beaubeau = loadCSV("./beaubeau.csv");
 	CSVFile beaubeau2 = loadCSV("./beaubeau2.csv");
-	CSVFile beaubeau2 = loadCSV("./beaubeau3.csv");
+	CSVFile beaubeau3 = loadCSV("./beaubeau3.csv");
 	String valider ="";  //sert à mettre en pause l'execution du programme
 	int score, duree, miss, lvl, temps, entree, nbmot ,cpt;
 	boolean manche, abort;
