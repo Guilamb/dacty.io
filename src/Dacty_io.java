@@ -222,7 +222,7 @@ class Dacty_io extends Program {
 	}
 
 	void partiePerso() {
-		int tagada;
+		int = 0;
 		int menu1 = 0;
 		for (int re = 0; re<9; re=re+3) {
 			tagada = 0;
