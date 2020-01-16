@@ -3,12 +3,15 @@ import extensions.*;
 
 class Dacty_io extends Program {
 
-	CSVFile fichier = loadCSV("./current.csv");
+	
 	CSVFile textecsv = loadCSV("./texte.csv");
 	String valider ="";  //sert à mettre en pause l'execution du programme
 	int score, duree, miss, lvl, temps, entree, nbmot ,cpt;
 	boolean manche, abort;
 	String [][] texte = new String[columnCount(textecsv)][rowCount(textecsv)];
+	String filename;
+	final int NBMAXMOTS =10000;
+	int nbMots;
 
 	void testTemps() {
 		temps = 0;
@@ -264,6 +267,15 @@ class Dacty_io extends Program {
 		} while (unMot.utilise!= false); // à implémenter 
 	}
 
+	void initialiserListe(ListeMot liste) {
+		CSVFile fichier = loadCSV("./current.csv");
+		liste.liste = new Mot[rowCount(fichier)];
+		for (int i=0; i<length(liste.liste); i++) {
+			liste.liste[i] = getCell(fichier,i);
+		}
+
+	}
+
 	void temps(long deb, long fin){
 		temps = temps + (int)(fin - deb);
     }
@@ -278,14 +290,14 @@ class Dacty_io extends Program {
 			miss ++;
 		}
 	}
-	void triRapide(String[] tab, int deb, int fin) {
+	/*void _triRapide(String[] tab, int deb, int fin) {
 		if (deb < fin) {
 			int index = decoupage(tab, deb, fin);
 			triRapide(tab, deb, index-1);
 			triRapide(tab, index+1, fin);
 		}
-	}
-	int decoupage(String[] tab, int deb, int fin) {
+	}*/
+	int _decoupage(String[] tab, int deb, int fin) {
 		String pivot = tab[fin];
 		int petit = (deb-1);
 		for (int idx=deb; idx<fin; idx++) {
@@ -382,4 +394,305 @@ class Dacty_io extends Program {
 			System.exit(0);
 		}
 	}
+	void menu_liste() {
+		cleanGinna();
+		int nbCsv = chercherCsv();
+		int section;
+		do {
+			for (int i=0; i<4; i++) {
+				println(texte[6][i]);
+			}
+			section = readInt();
+		} while (section!=1&&section!=2&&section!=3&&section!=4);
+		
+		if (section == 1) {
+			creation();
+		} else if (section ==2) {
+			ajout();	
+		} else if (section == 3) {
+			retirer();
+		} else if (section == 4) {
+			choixCsv(liste);
+			
+			int csvEnCours = readInt();
+			while (!controleSaisieListeCsv(csvEnCours)) {
+				csvEnCours = readInt();
+			}
+			CSVFile futurCsv = loadCSV("../ressources/"+listeCsv[csvEnCours-1]);
+
+			String[][] badTab = new String[NBMAXMOTS][1];
+			for (int i=0;i<rowCount(futurCsv) ;i++ ) {
+				badTab[i][0] = getCell(futurCsv,i , 0);
+		}
+
+		String[][] tab = new String [effacerNull(badTab)][1];
+		for (int j=0;j<effacerNull(badTab) ;j++ ) {
+			tab[j][0] = badTab[j][0];
+		}
+
+			if (length(tab)>0){
+
+			saveCSV(tab, "../ressources/"+listeCsv[csvEnCours-1]);
+			fichier=loadCSV("../ressources/"+listeCsv[csvEnCours-1]);
+		}
+			
+
+		} else{
+			println("entree incorect !");
+			valider = readString();
+			menu_liste();
+		}
+
+	}
+	boolean controleSaisieListeCsv(int input){
+		if (input > length(listeCsv)) {
+				println("entree incorect !");
+				readString();
+				return false;
+			}
+			return true;
+	}
+	void creation(){
+		cleanGinna();
+		println("entrez le nom du fichier : ");
+		filename=readString();
+		filename+=".csv";
+		String[][] fichier = new String[1][1];
+		println("ajoute un premier mot.");
+		String motAjoute = readString();
+		if (equals(motAjoute,"")) {
+			println("aucun mot ajouté, veuillez recommencer !");
+			readString();
+			creation();
+		}
+		fichier[0][0] = toLowerCase(motAjoute);
+		saveCSV(fichier, "../ressources/"+filename);
+		saveCSV(fichier,filename);//marche pas 
+		cleanGinna();
+		println("liste "+filename+" cree avec succes redemarez le jeu pour pouvoir modifier le csv");
+
+		menu_liste();
+
+	}
+	void chercherCsv() {
+		String[] ressources = getAllFilesFromDirectory("../ressources");
+		int nbCsv = 0, cpt = 0, cps = 0;
+		for (int i = 0; i<length(ressources); i++) {
+			if (!equals(ressources[i],"current.csv") && !equals(ressources[i],"texte.csv") && length(ressources[i]) > 4 && charAt(ressources[i],length(ressources[i])-4) == '.' && charAt(ressources[i],length(ressources[i])-3) == 'c' && charAt(ressources[i],length(ressources[i])-2) == 's' && charAt(ressources[i],length(ressources[i])-1) == 'v') {
+				nbCsv++;
+			}
+		}
+		return nbCsv;
+
+		int listeCsv = new String[nbCsv];
+		while (cpt<nbCsv && cps<length(ressources)) {
+			if (!equals(ressources[cps],"current.csv") && !equals(ressources[i],"texte.csv") && length(ressources[cps]) > 4 && charAt(ressources[cps],length(ressources[cps])-4) == '.' && charAt(ressources[cps],length(ressources[cps])-3) == 'c' && charAt(ressources[cps],length(ressources[cps])-2) == 's' && charAt(ressources[cps],length(ressources[cps])-1) == 'v') {
+				listeCsv[cpt] = ressources[cps];
+				cpt++;
+			}
+			cps++;
+		}
+		println(texte[6][4]);
+		for (int i=0;i<length(listeCsv) ;i++ ) {
+			println((i+1)+" - "+listeCsv[i]);
+		}
+	}
+	void acquerirCsv(String[][] tab,boolean afficher){
+		cleanGinna();
+		int nbMots=0;
+		int y=0;
+		while(y<rowCount(fichier) && tab[y][0]!=null && !equals(tab[y][0],"null")){
+			if(afficher) println(tab[y][0]);
+				nbMots++;
+			y++;
+		}
+	}
+	int effacerNull(String[][] tab){
+		int tailleFinale=0;
+		for (int i=0;i<length(tab) ;i++ ) {
+			if(tab[i][0]!=null && equals(tab[i][0],"null")){
+				tab[i][0]="";
+			}
+			tailleFinale=i;
+		}/*
+		String[][] newTab = new String[tailleFinale][1];
+		for (int j=0;j<tailleFinale ;j++ ) {
+			newTab[j][0] = tab[j][0]
+		}*/
+		return tailleFinale;
+	}
+	void ajout(){
+		int number;
+		cleanGinna();
+		
+		choixCsv();
+		number = readInt();
+		while(!controleSaisieListeCsv(number)){
+			ajout();
+		}
+
+
+		CSVFile fichier = loadCSV("../ressources/"+listeCsv[number-1]);
+		String[][] tab = new String[NBMAXMOTS][1];
+		for (int i=0;i<rowCount(fichier) ;i++ ) {
+			tab[i][0] = getCell(fichier,i , 0) ;
+		}
+
+		cleanGinna();
+		println("Entrez les mots à ajouter puis tapez sur entree entree entre chaque mots");
+		println("Une fois termine tapez STOP en majuscule");
+		String motAjoute="";
+		acquerirCsv(tab,false);
+		motAjoute=readString();
+
+		while((!equals("STOP",motAjoute)) && !((nbMots)> NBMAXMOTS)){ // pb stop est ajouté !
+			tab[nbMots][0] = toLowerCase(motAjoute); // pour eviter les pb de tri 
+			nbMots++;
+			cleanGinna();
+			motAjoute=readString();
+		}
+		tab[nbMots][0] = ""; //on enlève le stop à la fin !
+		saveCSV(tab, "../ressources/"+listeCsv[number-1]);
+		println("Mots ajoutés à la liste !");
+		println("");
+		println("Reselectionnez le fichier modifié (4) pour voir apparaitre les modifications apportés");
+		valider = readString();
+
+	}
+	void chercherCsv() {
+		String[] ressources = getAllFilesFromDirectory("../ressources");
+		int nbCsv = 0, cpt = 0, cps = 0;
+		for (int i = 0; i<length(ressources); i++) {
+			if (!equals(ressources[i],"current.csv") && !equals(ressources[i],"texte.csv") && length(ressources[i]) > 4 && charAt(ressources[i],length(ressources[i])-4) == '.' && charAt(ressources[i],length(ressources[i])-3) == 'c' && charAt(ressources[i],length(ressources[i])-2) == 's' && charAt(ressources[i],length(ressources[i])-1) == 'v') {
+				nbCsv++;
+			}
+		}
+		listeCsv = new String[nbCsv];
+		while (cpt<nbCsv && cps<length(ressources)) {
+			if (!equals(ressources[cps],"current.csv") && !equals(ressources[i],"texte.csv") && length(ressources[cps]) > 4 && charAt(ressources[cps],length(ressources[cps])-4) == '.' && charAt(ressources[cps],length(ressources[cps])-3) == 'c' && charAt(ressources[cps],length(ressources[cps])-2) == 's' && charAt(ressources[cps],length(ressources[cps])-1) == 'v') {
+				listeCsv[cpt] = ressources[cps];
+				cpt++;
+			}
+			cps++;
+		}
+	}
+	void triRapide(String[][] tab, int deb, int fin) {
+		if (deb < fin) {
+			int index = decoupage(tab, deb, fin);
+
+			triRapide(tab, deb, index-1);
+			triRapide(tab, index+1, fin);
+		}
+	}
+	int decoupage(String[][] tab, int deb, int fin) {
+		String pivot = tab[fin-1][0];
+		int petit = (deb-1);
+		println(length(pivot)+" "+length(tab[1][0])+" "+fin);
+		for (int idx=deb; idx<fin; idx++) {
+			int ca = 0;
+			while (tab[idx][0] != null && charAt(tab[idx][0],ca) == charAt(pivot,ca) && length(tab[idx][0])>ca && (length(pivot)-1)>ca) {
+				ca++;
+			}
+			if (tab[idx][0] != null && charAt(tab[idx][0],ca) < charAt(pivot,ca)) {
+				petit++;
+				String temp = tab[petit][0];
+				tab[petit][0] = tab[idx][0];
+				tab[idx][0] = temp;
+			}
+		}
+		String temp = tab[petit+1][0];
+		tab[petit+1][0] = tab[fin][0];
+		tab[fin][0] = temp;
+		return petit+1;
+	}
+	void retirer(){
+		cleanGinna();
+		choixCsv();
+		int number = readInt();
+		while(!controleSaisieListeCsv(number)){
+			retirer();
+		}
+
+		CSVFile fichier = loadCSV("../ressources/"+listeCsv[number-1]);
+		String[][] tab = new String[NBMAXMOTS][1];
+
+		for (int i=0;i<rowCount(fichier) ;i++ ) {
+			tab[i][0] = getCell(fichier,i , 0) ;
+		}
+		int tailleTab = effacerNull(tab);
+		if(tailleTab==0){ 
+			println("Csv vide !");
+			readString();
+			menu_liste();
+		}
+		println(length(tab));
+		readString();
+
+		cleanGinna();
+		acquerirCsv(tab,true);
+		readString();
+		println("Entrez le mot à supprimer ou tapez afficher pour réafficher le contenu de la liste");
+		String input=readString();;
+		
+		while (equals(input,"afficher")) {
+			cleanGinna();
+			acquerirCsv(tab,true);
+			readString();
+
+			println("Entrez le mot à supprimer ou tapez afficher pour réafficher le contenu de la liste");
+			input = readString();
+		}
+		cleanGinna();
+
+		triRapide(tab,0,tailleTab);
+
+		int indiceMotCible = binarySearch(tab,input,0,length(tab));
+		tab[indiceMotCible][0] = null;
+		boolean detectRemovedString = false;
+		int j=0;
+		while(!detectRemovedString && j<length(tab)-1)
+		 {
+			if(tab[j][0] == null){
+				detectRemovedString = true;
+				j++;
+			}else{
+				tab[j][0]= tab[j][0];
+				j++;
+			}
+		}
+		saveCSV(tab, "../ressources/"+listeCsv[number-1]);
+	}
+	int calculTailleTabCsv(String[][] tab){
+		int compteur=0;
+		int i = 0;
+		while(tab[i][0] != null && !equals(tab[i][0]," ") && compteur<length(tab)){
+			compteur++;
+		}
+		return compteur;
+	}
+
+	int binarySearch(String[][] tab, String motCible, int indiceDebut, int indiceFin){
+		if (length(tab)==0) {
+			return -1;
+		}
+
+		int indiceMilieu = (int)(indiceFin-(indiceFin-indiceDebut)/2);
+
+		if (equals(tab[indiceMilieu][0],motCible)) {
+			return indiceMilieu;
+		}
+
+		if (charAt(tab[indiceMilieu][0],0)<charAt(motCible,0)) {
+			return binarySearch(tab,motCible,indiceMilieu,indiceFin);
+
+		}else if (charAt(motCible,0)==charAt(tab[indiceMilieu][0],0)) {
+			int i=1;
+			while(charAt(motCible,i)>=charAt(tab[indiceMilieu][0],i) && i<length(motCible)){
+				i++;
+			}
+			return indiceMilieu;
+		}
+
+		return binarySearch(tab,motCible,indiceDebut,indiceMilieu);
+	} 
 }
