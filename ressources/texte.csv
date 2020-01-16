@@ -1,6 +1,6 @@
 ________                 __              .__        ,1 - 1 minute,Voici les règles du jeu :,prêt ?,1 - Définir une limite de temps ?,Tu as lachement abandonné !!,1 - Nouveau CSV
 \\______ \\ _____    _____/  |_ ___.__.    |__| ____  ,2 - 2 minutes,vide,tapez : ,2 - Définir un nombre de mots ?,La partie a été interrompue !!,2 - Ajouter un mot à un CSV existant
- |    |  \\\\__  \\ _/ ___\\   __<   |  |    |  |/  _ \\ ,3 - 30 mots,vide,vide,vide,La partie est terminÃ©e !!,3 - Effacer un mot d'un CSV
+ |    |  \\\\__  \\ _/ ___\\   __<   |  |    |  |/  _ \\ ,3 - 30 mots,vide,vide,vide,La partie est terminée !!,3 - Effacer un mot d'un CSV
  |    `   \\/ __ \\\\  \\___|  |  \\___  |    |  (  <_> ),4 - 60 mots,écrivez le mot affiché le plus vite possible,vide,Combien de temps ? ( - en secondes - entre 10 et 600 (10 minutes)) :,Fin de partie :,4 – Changer le CSV utilisé
 /_______  (____  /\\___  >__|  / ____| /\\ |__|\\____/ ,5 - Pas de limite !! (tapez stop pour arreter),Puis appuyez sur entrée pour valider le mot et continuer.,vide,vide,vide,Veuillez choisir un csv : 
         \\/     \\/     \\/      \\/      \\/            ,6 - Partie personalisée,Et temps pis si le mot est faux on passe au suivant !!,vide,vide,Du coup tu ne peux que recommencer.,vide
