@@ -322,6 +322,8 @@ class Dacty_io extends Program {
 		for (int i=0; i<rowCount(beaubeau); i++) {
 			println(getCell(beaubeau,i,0));
 		}
+		valider = readString();
+		cleanGinna();
 		for (int i=0; i<rowCount(beaubeau2); i++) {
 			println(getCell(beaubeau2,i,0));
 		}
