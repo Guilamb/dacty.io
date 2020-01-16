@@ -236,9 +236,7 @@ class Dacty_io extends Program {
 					tagada = 3;
 				}
 			} while (((tagada != 1 && (tagada != 2)) && re==0) || (((tagada>600) || (tagada<10)) && re == 3) || (((tagada>400) || (tagada<10)) && re == 6));
-			if (tagada == 1) {
-				re = 3;		
-			} else if (tagada == 2){
+			if (tagada == 2){
 				re = 6;
 			}
 		}
