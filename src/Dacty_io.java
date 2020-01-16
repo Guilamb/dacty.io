@@ -358,7 +358,7 @@ class Dacty_io extends Program {
 		println("");
 		valider = readString();
 		cleanGinna();
-		for (int i=0; i<rowCount(beaubeau), i++) {
+		for (int i=0; i<rowCount(beaubeau); i++) {
 			println(getCell(fichier,i,0));
 		}
 		/*Image celebrite = newImage("../ressources/BOBO.png");
