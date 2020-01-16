@@ -225,14 +225,14 @@ class Dacty_io extends Program {
 		int tagada;
 		int menu1 = 0;
 		for (int re = 0; re<9; re=re+3) {
-			tagada = "";
+			tagada = 0;
 			do {
 				cleanGinna();
 				for (int i=0; i<3; i++) {
 					println(texte[4][re+i]);
 				}
 				tagada = readInt();
-				if (!tagada == 1 && !tagada == 2) {
+				if (tagada == 0) {
 					tagada = 3;
 				}
 			} while (((!tagada == 1 && (!tagada == 2)) && re==0) || (((tagada>600) || (tagada<10)) && re == 3) || (((tagada>400) || (tagada<10)) && re == 6));
