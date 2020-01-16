@@ -105,9 +105,6 @@ class Dacty_io extends Program {
 	}*/
 
 	void algorithm() {
-		ListeMot liste = new ListeMot();
-		initialiserListe(liste);
-
 		boolean game = true;
 		for (int i=0; i<rowCount(textecsv); i++) {
 			for (int j=0; j<columnCount(textecsv); j++) {
@@ -172,8 +169,6 @@ class Dacty_io extends Program {
 			} else if (entree == 2) {
 				regles();
 			} else if (entree == 3) {
-				menu_liste(liste);
-			} else if (entree == 4) {
 				cleanGinna();
 				System.exit(0);
 			} else if (entree == 42) {
@@ -221,7 +216,7 @@ class Dacty_io extends Program {
 		entree = 0;
 		cpt = 0;
 		abort = false;
-		for (int i=0; i<15; i++) {
+		for (int i=0; i<14; i++) {
 			println(texte[0][i]);
 		}
 	}
