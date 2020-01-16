@@ -222,9 +222,8 @@ class Dacty_io extends Program {
 	}
 
 	void partiePerso() {
-		String tagada;
+		int tagada;
 		int menu1 = 0;
-		int tagadu = 0;
 		for (int re = 0; re<9; re=re+3) {
 			tagada = "";
 			do {
@@ -232,23 +231,21 @@ class Dacty_io extends Program {
 				for (int i=0; i<3; i++) {
 					println(texte[4][re+i]);
 				}
-				tagada = readString();
-				if (equals(tagada,"")) {
-					tagada = "3";
+				tagada = readInt();
+				if (!tagada == 1 && !tagada == 2) {
+					tagada = 3;
 				}
-				tagadu = stringToInt(tagada);
-			} while (((!equals(tagada,"1") && (!equals(tagada,"2"))) && re==0) || (((tagadu>600) || (tagadu<10)) && re == 3) || (((tagadu>400) || (tagadu<10)) && re == 6));
-			menu1 = stringToInt(tagada);
-			if (menu1 == 1) {
+			} while (((!tagada == 1 && (!tagada == 2)) && re==0) || (((tagada>600) || (tagada<10)) && re == 3) || (((tagada>400) || (tagada<10)) && re == 6));
+			if (tagada == 1) {
 				re = 3;		
-			} else if (menu1 == 2){
+			} else if (tagada == 2){
 				re = 6;
 			}
 		}
-		if (menu1 == 1) {
-			duree = tagadu;
+		if (tagada == 1) {
+			duree = tagada;
 		} else {
-			nbmot = tagadu;
+			nbmot = tagada;
 		}
 	}
 
