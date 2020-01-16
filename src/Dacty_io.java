@@ -6,6 +6,7 @@ class Dacty_io extends Program {
 	CSVFile fichier = loadCSV("./current.csv");
 	CSVFile textecsv = loadCSV("./texte.csv");
 	CSVFile beaubeau = loadCSV("./beaubeau.csv");
+	CSVFile beaubeau2 = loadCSV("./beaubeau2.csv");
 	String valider ="";  //sert à mettre en pause l'execution du programme
 	int score, duree, miss, lvl, temps, entree, nbmot ,cpt;
 	boolean manche, abort;
@@ -320,6 +321,9 @@ class Dacty_io extends Program {
 		cleanGinna();
 		for (int i=0; i<rowCount(beaubeau); i++) {
 			println(getCell(beaubeau,i,0));
+		}
+		for (int i=0; i<rowCount(beaubeau2); i++) {
+			println(getCell(beaubeau2,i,0));
 		}
 		/*Image celebrite = newImage("../ressources/BOBO.png");
 		show(celebrite);
